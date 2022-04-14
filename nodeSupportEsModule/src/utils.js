@@ -1,7 +1,4 @@
-import pathExists from 'path-exists'
-export function exists(p) {
-  return pathExists.sync(p)
-}
-export function log() {
-  console.log('utils')
-}
+import { pathExists } from 'path-exists'
+export const exists =(p) => pathExists.sync(p)
+export const  log = () => console.log('utils')
+export const add = (a, b) => a+b

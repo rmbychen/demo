@@ -5,7 +5,6 @@
   "bin": {
     "cl-cli": "./src/index.js"
   },
-  "target": "node",
   "scripts": {
     "dev": "webpack -w",
     "build": "webpack",
@@ -16,6 +15,11 @@
   "email": "chenlei@lazyaudio.com",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.17.9",
+    "@babel/plugin-transform-runtime": "^7.17.0",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/runtime-corejs3": "^7.17.9",
+    "babel-loader": "^8.2.4",
     "webpack": "^5.72.0",
     "webpack-cli": "^4.9.2"
   },
