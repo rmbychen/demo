@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+	<head>
+		<title>盒子和文字居中</title>
+		<meta charset="utf-8">
+		<style type="text/css">
+			*{
+				padding: 0;
+				margin: 0;
+			}
+			div{
+				width: 200px;
+				height: 200px;
+				margin: 0 auto;
+			}
+			/*普通的div定位*/
+			.general{
+				background-color: blue;
+				margin: 0 auto;
+				/*以下两行目的是让单行文字垂直居中*/
+				line-height: 200px;
+				text-align: center;
+			}
+
+
+			/*多行文字垂直居中*/
+			.textmany{
+				background-color: yellow;
+				margin: 0 auto;
+				line-height: 200px;
+				
+			}
+			.textmany span{
+				display: inline-block;
+				vertical-align: middle;
+				line-height: 1.5em;
+			}
+
+
+			/*定位流的div定位，(子绝父相）*/
+			.father{
+				border:1px solid #ccc;
+				margin: 0 auto;
+				background-color: green;
+				position: relative;
+			}
+			.father .son{
+				width: 100px;
+				height: 100px;
+				background-color: pink;
+				position: absolute;
+				left:50%;
+				top:50%;
+				margin: -50px -50px;
+				line-height: 100px;
+			}
+			.father .son span{
+				display: inline-block;
+				vertical-align: middle;
+				line-height: 1.5em;
+			}
+			.translate{
+				background-color: skyblue;
+				margin: 0 auto;
+			}
+			.translate .sub{
+				width: 100px;
+				height: 100px;
+				background-color: black;
+				color: white;
+				text-align: center;
+				line-height: 100px;
+				transform: translate(0,50%);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="general">普通流中的盒子</div>
+		<div class="textmany">
+			<span>多行文字居中多行文字居中多行文字居中多行文字居中多行文字居中</span>
+		</div>
+		<div class="father">
+			<div class="son">
+				<span>脱离标准流盒子的定位</span>
+			</div>
+		</div>
+		<div class="translate">
+			<div class="sub">css3中的平移</div>
+		</div>
+	</body>
+</html>

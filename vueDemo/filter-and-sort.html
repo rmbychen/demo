@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>过滤和排序</title>
+    <script src="node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <input type="text" v-model="search">
+    <button @click="setOrder(1)">年龄升序</button>
+    <button @click="setOrder(2)">年龄降序</button>
+    <button @click="setOrder(0)">不排序</button>
+    <ul v-for="(value,index) in filterPerson">
+        <li :key="index">{{index}}-{{value.name}}-{{value.age}}</li>
+    </ul>
+
+</div>
+<script>
+    //引入的vue.js 是通过npm 安装的，先安装node,输入命令npm init 初始化，输入命令npm install --save-dev vue.
+    //如果是把这个仓库整个down 下来的，安装node之后直接输入npm install
+    const vm = new Vue({
+        el: '#app',
+        data: {
+            search: '',
+            order:0,// 0不排序，1升序，2降序
+            person: [{
+                name: 'banana',
+                age: 5
+            }, {
+                name: 'apple',
+                age: 14
+            }, {
+                name: 'pear',
+                age: 9
+            }, {
+                name: 'purple',
+                age: 17
+            },
+                {
+                    name: 'watermelon',
+                    age: 2
+                }]
+        },
+        computed: {
+            filterPerson(){
+                const {person,search,order} = this
+                const filterArray= person.filter( item =>{
+                    return item.name.includes(search)
+                })
+                if(order!==0){
+                    filterArray.sort( (value1,value2)=>{
+                        if(order===1){//升序
+                        return value1.age-value2.age
+                    }else{//降序
+                        return value2.age-value1.age
+                    }
+                })
+                }
+                return filterArray
+            }
+        },
+        methods:{
+            setOrder(value){
+                this.order = value;
+            }
+        }
+    })
+</script>
+</body>
+</html>

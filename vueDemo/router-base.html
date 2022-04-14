@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>路由基础</title>
+    <script src="node_modules/vue/dist/vue.js"></script>
+    <script src="node_modules/vue-router/dist/vue-router.js"></script>
+    <style>
+        #app {
+            width: 800px;
+            margin: 100px auto;
+        }
+        header {
+            width: 500px;
+            height: 20px;
+            background-color: #70e1f5;
+        }
+        nav {
+            float: left;
+            width: 200px;
+            height: 80px;
+            background-color: #83a4d4;
+        }
+
+        section {
+            float: left;
+            width: 300px;
+            height: 80px;
+            background-color: #B3FFAB;
+        }
+        .box {
+            background-color: #efefef;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #000;
+            width: 500px;
+            height: 500px;
+            margin-top: 20px
+        }
+
+        a {
+            padding: 4px 8px;
+            background-color: #FF6B6B;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        a + a {
+            margin: 10px;
+        }
+        .router-link-active{
+            background-color: skyblue;
+        }
+
+    </style>
+</head>
+<body>
+<div id="app">
+    <!-- 相当于a标签，最终也会被渲染成a标签，to指跳转的路径 这属于声明式，在js中跳转可以用this.$router.push({...}),这属于编程式-->
+    <!-- 当 <router-link> 对应的路由匹配成功，将自动设置 class 属性值 .router-link-active -->
+    <router-link to="/a">跳转A</router-link>
+    <router-link to="/b">跳转B</router-link>
+    <router-link to="/foo/1">跳转Foo</router-link>
+    <router-link to="/props/2">跳转props</router-link>
+    <router-link to="/bar">跳转Bar</router-link>
+    <router-link to="/baz">去看看嵌套路由</router-link>
+    <router-link to="/direct">跳转direct</router-link>
+    <!-- 这里是路由的出口,至少有一个出口    -->
+    <router-view class="box"></router-view>
+    <!-- 因为我们是bar（默认的bar在上面这个没有name的出口出现）的兄弟，所以我们要并排~ -->
+    <router-view name="bar1"></router-view>
+    <router-view name="bar2"></router-view>
+    <router-view name="bar3"></router-view>
+</div>
+<script>
+    //引入的vue.js 是通过npm 安装的，先安装node,输入命令npm init 初始化，
+    // 输入命令npm install --save-dev vue安装vue依赖，输入命令 npm install --save-dev vue-router安装路由
+    //如果是把这个仓库整个down 下来的，安装node之后直接输入npm install
+    //定义的组件
+    const A = {template: '<div>我是A,但是要看看url喔，旁边‘跳转B’的兄弟也是我~~不要我换了个名字就不认识我了，那真是尴尬~</div>'}
+    const Foo = {template: '<div>我是Foo,我接收了一个参数id=>{{$route.params.id}},你也可以改变url上面的1试试~<span id="direct"></span></div>'}
+    const Props = {props: ['id'], template: '<div>我是props,我解耦了(因为组件和路由设置中多了个props属性，我就能直接拿id变量名了，而不是要像我左边的兄弟一样要$route.params.id)，我这样也能拿到参数=>{{id}}</div>'}
+
+    const Bar = {template: '<div>我是Bar,我下面彩色的兄弟跟我是同级多个路由喔~</div>'}
+    const BarLittle1 = {template: '<header>我是小Bar1</header>'}
+    const BarLittle2 = {template: '<nav>我是小Bar2</nav>'}
+    const BarLittle3 = {template: '<section>我是小Bar3</section>'}
+    // `` 是es6里的语法字符串模板，键盘的第二排的第一个键。英文输入法才行喔~我就下面这一个，仅仅这一个用了``
+    const Baz = {
+        template: `<div>
+                            <router-link to="/baz/baz1">跳转默认baz1</router-link>
+                            <router-link to="/baz/baz2">跳转baz2</router-link>
+                            <router-link to="/baz/baz3">跳转baz3</router-link>
+                            <div>这里是嵌套路由</div>
+                            <router-view></router-view>
+                            <router-view name="littleBaz3"></router-view>
+                            </div>`
+    }
+    const Baz1 = {template: '<div>我是默认Baz1</div>'}
+    const Baz2 = {template: '<div>我是Baz2</div>'}
+    const Baz3 = {template: '<div>我是Baz3</div>'}
+    const BazLittle3 = {template: `<div style="background-color: #F0C27B;">我是Baz3的同级路由小小小Baz3</div>`}
+    //定义路由，一个路由应该至少映射一个组件。
+    const routes = [{
+        name: 'a',
+        path: '/a',
+        component: A,
+        alias: '/b',//我的另外一个名字，我还是映射的A组件喔。
+    }, {
+        name: 'foo',//路由的名字
+        //路由的路径，如果在this.$router.push({path,params}),有path存在，那么params不会生效。
+        // ':'表示动态匹配，例如path为‘/foo/1’，则$route.params.id ==== 1。
+        // 注意，这时候不能匹配'/foo'喔~，有了冒号就必须要有值才行
+        path: '/foo/:id',
+        component: Foo//映射的组件，想同级显示多个组件用components:{}
+    }, {
+        name: 'props',
+        path: '/props/:id',
+        component: Props,
+        props: true
+    }, {
+        name: 'bar',
+        path: '/bar',
+        components: {//同级多个组件一起显示
+            default: Bar,
+            bar1: BarLittle1,
+            bar2: BarLittle2,
+            bar3: BarLittle3
+        }
+    },
+        {
+            name: 'baz',
+            path: '/baz',
+            component: Baz,
+            children: [{ //我是嵌套路由，因为前面的path前面都加上了‘/’，是被当做根路径开始，而子路由不需要，所以开头没有‘/’
+                path: 'baz1', component: Baz1 //path为‘/baz’默认进入这个空的路由
+            }, {
+                path: 'baz2', component: Baz2
+            }, {
+                path: 'baz3', components: {
+                    default: Baz3,
+                    littleBaz3: BazLittle3
+                }
+            }]
+        }, {
+            path: '/direct',
+            redirect: {path: '/foo/1'},//这是直接重定向,也可以接函数，不过我还没弄清楚什么场景可以用
+        }]
+    //实例化路由
+    const router = new VueRouter({
+        routes
+    })
+    new Vue({
+        router,//挂载路由
+        el: '#app',
+        data: {}
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>图片居中</title>
+	<meta charset="utf-8">
+	<style type="text/css">
+	/*	方法一：背景图片利用background-position: center，如img1;
+		方法二：将img的父元素display设置成table-cell，然后水平居中设置text-align为center，垂直居中设置vertical-align为middle。如img2
+		方法三：利用父元素行高line-height居中
+		方法四：利用子绝父相定位
+		方法五：利用flex布局*/
+
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		div{
+			width: 600px;
+			height: 500px;
+			border:1px solid #ccc;
+		}
+		.img1{
+			background: url(img/test.jpg) no-repeat  center;
+		}
+		.img2{
+		/*	让元素以单元格的形式出现，设置了table-cell的元素对宽高敏感，margin无反应，响应padding属性，内容溢出时撑开父元素
+			应用场景：1、大小不固定垂直居中*/
+			display: table-cell;
+			vertical-align: middle;
+			text-align: center;
+		}
+		
+
+		.img3{
+			line-height: 500px;
+			text-align: center;
+		}
+		.img3 img{
+			vertical-align: middle;
+		}
+		.img4{
+			position: relative;
+		}
+		.img4 img{
+			position: absolute;
+			left: 50%;
+			top:50%;
+			margin: -135px -240px;
+		}
+		.img5{
+			display: flex;
+			/*主轴的对齐方式，flex-start左对齐 | flex-end右对齐 | center | space-between | space-around*/
+			justify-content: center;
+			/*交叉轴上对齐方式，flex-start | flex-end | center | baseline第一行文字基线对齐 | stretch 占满整个容器高度*/
+			align-items: center;
+		}
+	</style>
+</head>
+<body>
+	<div class="img1"></div>
+	<div class="img2">
+		<img src="img/test.jpg">
+	</div>
+	<div class="img3">
+		<img src="img/test.jpg" >
+	</div>
+	<div class="img4">
+		<img src="img/test.jpg" >
+	</div>
+	<div class="img5">
+		<img src="img/test.jpg" >
+	</div>
+</body>
+</html>

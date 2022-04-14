@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>表单demo</title>
+    <script src="node_modules/vue/dist/vue.js"></script>
+    <style>
+        span{
+            background-color: #efefef;
+        }
+        .submit-box{
+            background-color: #efefef;
+            width: 50%;
+            border: 5px solid #000;
+            box-sizing: border-box;
+            padding: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <!-- prevent 是阻止默认行为，这里的默认行为是跳转页面到action中的/#-->
+    <form action="/#" @submit.prevent="submitForm">
+       <p>
+           <label for="username" >请输入姓名：</label>
+           <!--   v-model是个指令，它负责监听用户的输入而改变数据，这里是改变了username -->
+           <input type="text" id="username" v-model="username" placeholder="请输入姓名">
+           <!--   v-if 也是个指令，它在v-if里面的值，也就是这里的username为真的时候才会渲染这个span标签-->
+           <!--   因为一开始username 是个空的字符串，代表着假值，所以下面这个标签不会出现-->
+           <span v-if="username">【您的名字叫：{{username}}】</span>
+       </p>
+        <p>
+            <label for="age" >请输入年龄：</label>
+            <input type="number" id="age" v-model="age" placeholder="请输入年龄">
+            <span v-if="age">【您今年：{{age}}岁了】</span>
+        </p>
+
+        <p>
+            <label>请选择性别：</label>
+            <input type="radio"  value="female" v-model="sex">
+            <input type="radio" value="male" v-model="sex">
+            <span>【您选择了性别：{{sex==='female'?"女":"男"}}】</span>
+        </p>
+        <p>
+            <label>请选择爱好：</label>
+            <input type="checkbox"  value="爬山" v-model="favorite">
+            <input type="checkbox" value="打篮球" v-model="favorite">
+            <input type="checkbox"  value="蹦极" v-model="favorite">
+            <input type="checkbox" value="旅游" v-model="favorite">
+            <span>【您选择了这些爱好：{{favorite.length>0?favorite:"YO!,您连爱好都没有耶！"}}】</span>
+        </p>
+        <p>
+            <label>您所在的城市：</label>
+            <select name="" v-model="chooseCity">
+                <option value="0" disabled>请选择</option>
+                <option value="" v-for="item in city" :value="item.id">{{item.name}}</option>
+            </select>
+            <span>【您所在的城市：{{chooseCityName || '啊哦！您住在黑洞上吗？'}}】</span>
+        </p>
+        <button>提交</button>
+        <div v-if="submit" class="submit-box">
+            <p>{{end}}</p>
+            <span>===================你要交给后台的数据============================</span>
+            <p>{{submitData}}</p>
+        </div>
+    </form>
+</div>
+<script>
+    //引入的vue.js 是通过npm 安装的，先安装node,输入命令npm init 初始化，输入命令npm install --save-dev vue.
+    //如果是把这个仓库整个down 下来的，安装node之后直接输入npm install
+    const vm = new Vue({
+        el:'#app',
+        data:{
+            username:'',//用户名
+            age:'',//年龄
+            sex:'female',//性别
+            favorite:[],//爱好
+            city:[{
+                id:1,
+                name:'深圳'
+            },{
+                id:2,
+                name:'北京'
+            },{
+                id:3,
+                name:'上海'
+            }],
+            chooseCity:'0',//选中的城市
+            end:'',
+            submitData:{},//最终要传给后台的数据啦
+            submit:false//是否点击提交了
+        },
+        computed:{
+            //这是计算属性，用来获取下拉框选中的城市名字，因为这个方法里有data里面的chooseCity，所以一旦chooseCity改变，这个方法就会触发
+            chooseCityName(){
+                //这是es6的解构语法，es6建议看阮一峰老师的，地址http://es6.ruanyifeng.com
+                const {city,chooseCity} =this
+                //let 是es6的声明语法
+                let cityName = ''
+                // for...of是es6语法里的遍历
+                for(let item of city){
+                    if(item.id === chooseCity){
+                        cityName = item.name
+                    }
+                }
+                return cityName
+            }
+        },
+        methods:{
+            submitForm(){
+                this.end = '酱酱酱酱！因为有prevent,我不会跳转页面啦~'
+                //这里是es6的解构语法喔，上面提示过了
+                const {username,age,sex,favorite,chooseCity} = this;
+                //这里也是es6的语法啦，{username}相当于{username:username}
+               this.submitData = {
+                   username,
+                   age:+age,//变量前面一个‘+’号的意思是把string转为number
+                   sex,
+                   favorite,
+                   chooseCity
+               }
+               this.submit = true
+            }
+        }
+    })
+</script>
+</body>
+</html>

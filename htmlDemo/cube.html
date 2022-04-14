@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+	<head>
+		<title>正方体-3d</title>
+		<meta charset="utf-8">
+		<style type="text/css">
+			*{
+				/*在ie中有兼容问题*/
+				margin: 0;
+				padding: 0;
+			}
+			body{
+				/*近大远小，z轴的视觉,需要给拥有该效果的父元素设置*/
+				perspective: 500px;
+			}
+			ul{
+				width: 200px;
+				height: 200px;
+				margin: 0 auto;
+				margin-top: 100px;
+				position: relative;
+				/*显示3d效果*/
+				transform-style: preserve-3d;
+				transform: rotateY(0deg) rotateX(0deg);
+				animation: sport 5s linear 0s infinite;
+			}
+			
+			ul li{
+				list-style: none;
+				width: 200px;
+				height: 200px;
+				line-height: 200px;
+				text-align: center;
+				font-size: 50px;
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+			ul:hover{
+				animation-play-state: paused; 
+			}
+			/*左*/
+			ul li:nth-child(1){
+				background-color: red;
+				transform: rotateY(90deg) translateZ(-200px) ;
+			}
+			/*右*/
+			ul li:nth-child(2){
+				background-color: green;
+				transform: rotateY(90deg) translateZ(200px) ;
+			}
+			/*上*/
+			ul li:nth-child(3){
+				background-color: blue;
+				transform: rotateX(90deg) translateZ(100px) scale(2,1);
+			}
+			/*后*/
+			ul li:nth-child(4){
+				background-color: pink;
+				transform: rotateX(180deg) translateZ(100px) scale(2,1);
+			}
+			/*下*/
+			ul li:nth-child(5){
+				background-color: yellow;
+				transform: rotateX(270deg) translateZ(100px) scale(2,1);
+			}
+			ul li:nth-child(6){
+				background-color: purple;
+				transform: rotateY(360deg) translateZ(100px) scale(2,1);
+			}
+			@keyframes sport{
+				from{
+					transform: rotateX(0deg);
+
+				}
+				to{
+					transform: rotateX(360deg);
+
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<ul>
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+			<li>6</li>
+		</ul>
+	</body>
+</html>

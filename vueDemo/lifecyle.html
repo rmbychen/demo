@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>生命周期</title>
+    <script src="node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <p>{{update?"跟新了值":"没更新值"}}</p>
+    <text><text>
+    <button @click="updateAction">点我更新数据</button>
+    <button @click="destoryAction">点我销毁</button>
+</div>
+<script>
+    new Vue({
+        el:'#app',
+        data:{
+            update:false
+
+        },
+        methods:{
+            updateAction(){
+                this.update = true
+            },
+            destoryAction(){
+                this.$destroy()
+            }
+        },
+        beforeCreate(){
+            console.log("创建前...这里不能访问到data里的变量,因为=>",this.update)
+        },
+        created(){
+            console.log("创建了...在这里做一些ajax请求，因为这里可以访问data里的变量了=>",this.update)
+        },
+        beforeMount(){
+            console.log("挂载前...",this.update)
+        },
+        mounted(){
+            console.log("挂载了...这里可以放关于dom操作",this.update)
+        },
+        beforeUpdate(){
+            console.log("更新前...",this.update)
+        },
+        updated(){
+            console.log("跟新了...",this.update)
+        },
+        beforeDestroy(){
+            console.log("销毁前...在这里做收尾工作，比如清除定时器",this.update)
+        },
+        destroyed(){
+            console.log("销毁了...",this.update)
+        },
+        renderError(){
+            console.log("渲染错误")
+        }
+    })
+</script>
+</body>
+</html>
